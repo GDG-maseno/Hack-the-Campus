@@ -1,0 +1,25 @@
+{
+  "name": "fixmaseno",
+  "version": "1.0.0",
+  "description": "Campus issue reporter for Maseno University",
+  "type": "module",
+  "main": "server/index.js",
+  "scripts": {
+    "setup": "npm install && npm --prefix web install",
+    "dev": "concurrently \"node --watch server/index.js\" \"npm --prefix web run dev\"",
+    "build": "npm --prefix web run build",
+    "start": "node server/index.js",
+    "seed": "node server/seed.js",
+    "test": "node --test server/tests/*.test.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "better-sqlite3": "^11.0.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.0",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}

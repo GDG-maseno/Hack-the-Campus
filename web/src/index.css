@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overscroll-behavior-y: none;
+  }
+  body {
+    @apply bg-surface font-sans text-on-surface antialiased;
+    min-height: 100dvh;
+  }
+  /* hide scrollbar but keep scroll */
+  ::-webkit-scrollbar { display: none; }
+  * { scrollbar-width: none; }
+
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
