@@ -1,0 +1,41 @@
+@import 'tailwindcss';
+@source '../../vendor/pushery/wirekit/resources/views/**/*.blade.php';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-heading: 'Outfit', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+    :root {
+        /* Primary: Kenyan Green #006B3F */
+        --color-wk-accent: #006B3F;
+        --color-wk-accent-hover: #005432;
+        --color-wk-accent-content: #006B3F;
+        --color-wk-accent-fg: #FAFAFA;
+        
+        /* Secondary: Terracotta #C0392B */
+        --color-wk-danger: #C0392B;
+        --color-wk-danger-text: #C0392B;
+        --color-wk-danger-hover: #962D22;
+        
+        /* Accent: Safari Gold #E8A317 */
+        --color-wk-warning: #E8A317;
+        --color-wk-warning-text: #B47C0E;
+        --color-wk-warning-hover: #C58A13;
+
+        /* Background: Off-white #FAFAFA */
+        --color-wk-bg: #FAFAFA;
+        --color-wk-bg-elevated: #FFFFFF;
+        
+        /* Text: Charcoal #1F2937 */
+        --color-wk-text: #1F2937;
+        
+        /* Typography */
+        --font-wk-heading: var(--font-heading);
+        --font-wk-sans: var(--font-sans);
+    }
+}

@@ -1,0 +1,27 @@
+# ─── Build context exclusions ──────────────────────────────────────────────
+.git
+.gitignore
+.github
+
+# Dependencies (installed fresh inside image)
+node_modules
+vendor
+
+# Local env files — NEVER bake into image
+.env
+.env.*
+!.env.example
+
+# Dev/test files not needed in image
+tests
+scratch
+*.log
+
+# Docker meta
+Dockerfile
+.dockerignore
+render.yaml
+
+# OS noise
+.DS_Store
+Thumbs.db

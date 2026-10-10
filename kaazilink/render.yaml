@@ -1,0 +1,125 @@
+services:
+  - type: web
+    name: kaazilink
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    # Render health-checks this path to know the container is alive
+    healthCheckPath: /
+    envVars:
+      # ── Application ─────────────────────────────────────────────────────────
+      - key: APP_NAME
+        value: Kaazilink
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        generateValue: true          # Render auto-generates a secure key on first deploy
+      - key: APP_URL
+        # UPDATE THIS after your first deploy — Render shows you the URL.
+        # Format: https://kaazilink.onrender.com  (or your custom domain later)
+        sync: false
+
+      # ── Logging ─────────────────────────────────────────────────────────────
+      - key: LOG_CHANNEL
+        value: errorlog              # Writes to stderr — visible in Render dashboard
+      - key: LOG_LEVEL
+        value: debug
+
+      # ── Database (NeonDB PostgreSQL) ─────────────────────────────────────────
+      # Set DB_URL to your full NeonDB connection string:
+      # postgresql://user:pass@ep-xxx.region.aws.neon.tech/dbname?sslmode=require
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_SSLMODE
+        value: require
+      - key: DB_URL
+        sync: false                  # Set in Render dashboard — your NeonDB connection string
+
+      # ── Session / Cache / Queue ──────────────────────────────────────────────
+      - key: SESSION_DRIVER
+        value: database
+      - key: SESSION_LIFETIME
+        value: "120"
+      - key: SESSION_ENCRYPT
+        value: "false"
+      - key: SESSION_PATH
+        value: /
+      - key: SESSION_DOMAIN
+        sync: false                  # Set to your Render domain: kaazilink.onrender.com
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: sync                  # No separate worker on free tier; jobs run inline
+
+      # ── File Storage (Cloudflare R2) ─────────────────────────────────────────
+      - key: FILESYSTEM_DISK
+        value: r2
+      # Livewire temp uploads MUST use local disk. R2/S3 drivers return S3 streams
+      # that PHP cannot open as resource handles (stream_get_meta_data crashes).
+      # The final KYC file store() still targets the 'kyc' R2 disk — only staging is local.
+      - key: LIVEWIRE_TEMPORARY_FILE_UPLOAD_DISK
+        value: local
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_BUCKET
+        sync: false
+      - key: R2_ENDPOINT
+        sync: false
+      - key: R2_DEFAULT_REGION
+        value: auto
+      - key: R2_USE_PATH_STYLE_ENDPOINT
+        value: "true"
+      - key: R2_URL
+        value: ""                    # Leave blank unless you have a public R2 domain
+
+      # ── Mail ─────────────────────────────────────────────────────────────────
+      - key: MAIL_MAILER
+        sync: false                  # e.g. smtp, mailgun, resend — set in dashboard
+      - key: MAIL_HOST
+        sync: false
+      - key: MAIL_PORT
+        sync: false
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      - key: MAIL_SCHEME
+        value: tls
+      - key: MAIL_FROM_ADDRESS
+        value: hello@kaazilink.co.ke
+      - key: MAIL_FROM_NAME
+        value: Kaazilink
+
+      # ── Google OAuth ─────────────────────────────────────────────────────────
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_REDIRECT_URI
+        sync: false                  # Set to: https://[your-render-url]/auth/google/callback
+
+      # ── Payments (PayHero via samuelbuilds.top relay) ────────────────────────
+      - key: PAYMENT_GATEWAY
+        value: payhero
+      - key: PAYHERO_API_USERNAME
+        sync: false
+      - key: PAYHERO_API_PASSWORD
+        sync: false
+      - key: PAYHERO_CHANNEL_ID
+        sync: false
+      - key: PAYHERO_CALLBACK_URL
+        # This never changes — samuelbuilds.top is always the PayHero-facing URL.
+        # The relay script forwards KZL- references to APP_URL internally.
+        value: https://samuelbuilds.top/payhero_callback.php
+
+      # ── Misc ─────────────────────────────────────────────────────────────────
+      - key: APP_LOCALE
+        value: en
+      - key: BCRYPT_ROUNDS
+        value: "12"
+      - key: BROADCAST_CONNECTION
+        value: log
